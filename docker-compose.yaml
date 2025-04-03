@@ -1,0 +1,20 @@
+version: '3'
+services:
+  scratchpad:
+    build: .
+    user: root
+    container_name: ray_serve_tutorial
+    ports:
+      - "8888:8888"
+      - "9000:9000"
+      - "8000:8000"
+      - "8265:8265"
+      - "9090:9090"
+      - "5001:5001"
+      - "6379:6379"
+      - "9001:9001"
+      
+
+    volumes:
+      - ./notebooks:/ray_serve_tutorial/notebooks
+    restart: "no"
