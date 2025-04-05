@@ -17,7 +17,7 @@ RUN sh /uv-installer.sh && rm /uv-installer.sh
 ENV PATH="/root/.local/bin/:$PATH"
 
 RUN uv pip install jupyterlab --system
-
 COPY startup.sh /ray_serve_tutorial/startup.sh
+COPY README.md /ray_serve_tutorial/README.md
 RUN chmod +x /ray_serve_tutorial/startup.sh
 ENTRYPOINT ["/ray_serve_tutorial/startup.sh"]
