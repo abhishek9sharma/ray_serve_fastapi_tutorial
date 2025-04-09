@@ -14,6 +14,9 @@ services:
       - "6379:6379"
       - "9001:9001"
       - "8001:8001"
+      - "8002:8002"
+      - "8003:8003"
+      - "8004:8004"
 
     volumes:
       - ./workspace:/ray_serve_tutorial/workspace

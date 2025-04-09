@@ -17,8 +17,8 @@ format:
 	@echo "Formatting Python code..."
 	python -m pip install black
 	python -m pip install isort
-	black src
-	isort src
+	black workspace/src
+	isort workspace/src
 #   black .  && autopep8 --in-place --recursive . && flake8 src tests"
 
 #	#@black $(PYTHON_FILES)
