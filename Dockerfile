@@ -11,17 +11,21 @@ EXPOSE 8080
 EXPOSE 6006
 EXPOSE 6379
 EXPOSE 9000
+EXPOSE 8089
 
 
 
 
 #https://docs.astral.sh/uv/guides/integration/docker/#available-images
 RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates git tree
+RUN apt-get update && apt-get install -y --no-install-recommends fish
 ADD https://astral.sh/uv/install.sh /uv-installer.sh
 RUN sh /uv-installer.sh && rm /uv-installer.sh
 ENV PATH="/root/.local/bin/:$PATH"
 
 RUN uv pip install jupyterlab --system
+RUN uv pip install locust --system
+
 COPY startup.sh /ray_serve_tutorial/startup.sh
 COPY README.md /ray_serve_tutorial/README.md
 RUN chmod +x /ray_serve_tutorial/startup.sh

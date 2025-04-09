@@ -1,38 +1,27 @@
+import math
 import os
 
-import litellm
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 
 app = FastAPI()
 
 
-class ChatRequest(BaseModel):
-    model: str = "gpt-3.5-turbo"  # Default model
-    prompt: str
-    temperature: float = 0.7
-    max_tokens: int = 256
+def compute_intensive_task(n: int = 1000000) -> int:
+    """A CPU-intensive task (calculating primes up to n)."""
+    primes = []
+    for num in range(2, n + 1):
+        is_prime = True
+        for i in range(2, int(math.sqrt(num)) + 1):
+            if num % i == 0:
+                is_prime = False
+                break
+        if is_prime:
+            primes.append(num)
+    return len(primes)
 
 
 @app.get("/hello")
 def hello():
-    return {"message": "Hello, World!"}
-
-
-@app.post("/chat/")
-async def chat(request: ChatRequest):
-    try:
-        # Call OpenAI using litellm
-        response = litellm.completion(
-            api_base=LLM_PROVIDER_BASE,
-            api_key=LLM_API_TOKEN,
-            model=request.model,
-            messages=[{"role": "user", "content": request.prompt}],
-            temperature=request.temperature,
-            max_tokens=request.max_tokens,
-        )
-
-        return {"response": response["choices"][0]["message"]["content"]}
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    result = compute_intensive_task()  # This will use CPU
+    print(result)
+    return {"message": "Hello, World!", "primes_count": result}
