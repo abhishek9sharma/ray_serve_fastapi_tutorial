@@ -50,14 +50,21 @@ A simple tutorial on deploying fastapi apps using ray_serve
     - __Serve Ray App From CodeLocation__
         - run ```serve start --http-host 0.0.0.0 ```
         - run ``` serve run src.ray_fastapi:rayappadvanced --non-blocking ```
-        - The app should be visible at [http://localhost:8000/docs](http://localhost:8000/docs)
+        - The app should be visible at [http://localhost:8001/docs](http://localhost:8001/docs)
     
 
     - __Serve Ray App From Config file__
         - ```serve   shutdown``` 
         -  ```serve build src.ray_fastapi:rayappadvanced -o serve_config_app.yaml  ```
         -  ```serve deploy serve_config_app.yaml  ```
-        - The app should be visible at [http://localhost:8000/docs](http://localhost:8000/docs)
+        - The app should be visible at [http://localhost:8001/docs](http://localhost:8001/docs)
+    
+    - __Serve Replica Autoscaling__
+        - Start ```locust -f workspace/src/locust_test.py --web-port 8004```
+        - Shutdown serve  ```serve shutdown ```
+        - Change the __num_replicas__ in __serve_config_app.yaml__ to __auto__
+        - Redeploy app using ```serve deploy serve_config_app.yaml  ```
+        - You can see auto_scaling of replica when u bombard the endpoint [http://localhost:8001](http://localhost:8001/) with requests
     
 
 

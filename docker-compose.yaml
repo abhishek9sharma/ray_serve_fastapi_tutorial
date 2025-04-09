@@ -1,6 +1,6 @@
 version: '3'
 services:
-  scratchpad:
+  ray_serve_tutorial:
     build: .
     user: root
     container_name: ray_serve_tutorial
@@ -17,6 +17,7 @@ services:
       - "8002:8002"
       - "8003:8003"
       - "8004:8004"
+      - "8089:8089"
 
     volumes:
       - ./workspace:/ray_serve_tutorial/workspace
