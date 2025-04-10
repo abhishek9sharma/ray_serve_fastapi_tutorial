@@ -63,7 +63,15 @@ A simple tutorial on deploying fastapi apps using ray_serve
     - __Serve Replica Autoscaling__
         - Start ```locust -f workspace/src/locust_test.py --web-port 8004```
         - Shutdown serve  ```serve shutdown ```
-        - Change the __num_replicas__ in __serve_config_app.yaml__ to __auto__
+        - Remove the __num_replicas__ in __serve_config_app.yaml__
+        - Add below config 
+                
+                    max_ongoing_requests: 5
+                    autoscaling_config:
+                        target_ongoing_requests: 2
+                        min_replicas: 2
+                        max_replicas: 5
+
         - Redeploy app using ```serve deploy serve_config_app.yaml  ```
         - You can see auto_scaling of replica when u bombard the endpoint [http://localhost:8001](http://localhost:8001/) with requests
     
