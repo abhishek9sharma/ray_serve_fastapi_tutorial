@@ -1,13 +1,17 @@
-import math
-import os
-
 from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
 
-def compute_intensive_task(n: int = 1000000) -> int:
-    """A CPU-intensive task (calculating primes up to n)."""
+import math
+import random
+
+
+def compute_intensive_task(n: int = None) -> int:
+    """A CPU-intensive task (calculating primes up to n). If n is not provided, it is randomly chosen."""
+    if n is None:
+        n = random.randint(1000, 10000)  # Randomly choose n between 1000 and 1,000,000
+
     primes = []
     for num in range(2, n + 1):
         is_prime = True
@@ -23,5 +27,4 @@ def compute_intensive_task(n: int = 1000000) -> int:
 @app.get("/hello")
 def hello():
     result = compute_intensive_task()  # This will use CPU
-    print(result)
-    return {"message": "Hello, World!", "primes_count": result}
+    return {"message": "Hello, World!", "primes_count": str(result)}
