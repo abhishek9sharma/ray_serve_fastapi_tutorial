@@ -14,13 +14,14 @@ A simple tutorial on deploying fastapi apps using ray_serve
 -  You may need to set up some environment variables. The steps are mentioned below. 
     - The default setting of the tutorials is to use [OpenAI](https://openai.com/) services which requires an API key. To get the key, you need to sign up for an account on the [OpenAI website](https://openai.com/product). Once you have your API key, you can set it in your environment variables wherever mentioned in the notebooks.
 
-- Jupyter Notebook demonstrating how to deploy a _Hello World_ FastAPI app Using _Rays' Python API_
-    - Browse the url http://localhost:8888/lab
-    - Follow the instructions in the notebook. It is self contained. 
+### Jupyter Notebook demonstrating how to deploy a _Hello World_ FastAPI app Using _Rays' Python API_
+    
+- Browse the url http://localhost:8888/lab
+- Follow the instructions in the notebook. It is self contained. 
 
-- Steps to deploying a FastAPI app Using Ray CLI
 
-    Below comamnds should be run frome the cloned folder i.e. __ray_serve_fastapi_tutorial__
+### Steps to deploying a FastAPI app Using Ray CLI
+
 - Below comamnds should be run frome the cloned folder i.e. __ray_serve_fastapi_tutorial__
 
 - Change Directory to workspace ( if not using docker)
@@ -71,4 +72,5 @@ A simple tutorial on deploying fastapi apps using ray_serve
 
 ## References
 
-- [https://docs.litellm.ai/](https://docs.litellm.ai/)
+- https://docs.ray.io/en/latest/index.html
+- https://maxpumperla.com/learning_ray
