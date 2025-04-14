@@ -3,7 +3,12 @@ A simple tutorial on deploying fastapi apps using ray_serve
 
 
 ## How to Run
+
+### Setting Up
 - Install Docker from [here](https://docs.docker.com/get-docker/)
+
+    * Note: If you do not want to use Docker you can can run the notebook/scripts directly on your machine also using [jupyter lab](https://jupyter.org/install)
+
 - Run below script
     ```bash
     #!/bin/bash
@@ -11,16 +16,22 @@ A simple tutorial on deploying fastapi apps using ray_serve
     cd  ray_serve_fastapi_tutorial
     make up_with_build 
     ```
--  You may need to set up some environment variables. The steps are mentioned below. 
-    - The default setting of the tutorials is to use [OpenAI](https://openai.com/) services which requires an API key. To get the key, you need to sign up for an account on the [OpenAI website](https://openai.com/product). Once you have your API key, you can set it in your environment variables wherever mentioned in the notebooks.
 
-### Jupyter Notebook demonstrating how to deploy a _Hello World_ FastAPI app Using _Rays' Python API_
+
+### Running the Jupyter Notebook 
+This notebook demonstrates how to deploy a _Hello World_ FastAPI app Using _Ray Serves Python API_
     
-- Browse the url http://localhost:8888/lab
-- Follow the instructions in the notebook. It is self contained. 
+- If you have installed Docker, provided you have run the command ```make up_with_build ``` mentioned before, you can browsethe below link
+    - http://localhost:8888/lab/tree/workspace/notebooks/serving_fastapi_ray.ipynb
+
+- If you are using [jupyter lab](https://jupyter.org/install) 
+    - run the command```jupyter lab ``` 
+    - browse the url http://localhost:8888/lab or http://localhost:8889/lab
+- Follow the instructions in the notebook [serving_fastapi_ray.ipynb](/workspace/notebooks/serving_fastapi_ray.ipynb). It is self contained. 
 
 
-### Steps to deploying a FastAPI app Using Ray CLI
+### Ray CLI
+Below steps demonstrate how to deploy a _Hello World_ FastAPI app Using _Ray Serves CLI_
 
 - Below comamnds should be run frome the cloned folder i.e. __ray_serve_fastapi_tutorial__
 
@@ -49,32 +60,45 @@ A simple tutorial on deploying fastapi apps using ray_serve
 -  **Serving App**
 
     - __Serve Ray App From CodeLocation__
-        - run ```serve start --http-host 0.0.0.0 ```
-        - run ``` serve run src.ray_fastapi:rayappadvanced --non-blocking ```
-        - The app should be visible at [http://localhost:8001/docs](http://localhost:8001/docs)
+        - Run below commands
+            -  ```serve start --http-host 0.0.0.0 --http-port 8001 ```
+            - ``` serve run src.ray_fastapi:rayappadvanced --non-blocking ```
+        - The app should be visible at [http://localhost:8001/docs](http://localhost:8001/docs) and serve at [http://localhost:8001/hello](http://localhost:8001/hello)
     
 
     - __Serve Ray App From Config file__
-        - ```serve   shutdown``` 
-        -  ```serve build src.ray_fastapi:rayappadvanced -o serve_config_app.yaml  ```
-        -  ```serve deploy serve_config_app.yaml  ```
-        - The app should be visible at [http://localhost:8001/docs](http://localhost:8001/docs)
+        - Run below commands
+            - ```serve   shutdown -y``` 
+            -  ```serve build src.ray_fastapi:rayappadvanced -o serve_config_app.yaml  ```
+            - ```serve start --http-host 0.0.0.0 --http-port 8001 ```
+            -  ```serve deploy serve_config_app.yaml  ```
+        - The app should be visible at [http://localhost:8001/docs](http://localhost:8001/docs) and serve at [http://localhost:8001/hello](http://localhost:8001/hello)
+    
     
     - __Serve Replica Autoscaling__
-        - Start ```locust -f workspace/src/locust_test.py --web-port 8004```
-        - Shutdown serve  ```serve shutdown ```
-        - Remove the __num_replicas__ in __serve_config_app.yaml__
-        - Add below config 
-                
-                    max_ongoing_requests: 5
-                    autoscaling_config:
-                        target_ongoing_requests: 2
-                        min_replicas: 2
-                        max_replicas: 5
+        - Run app with autoscalilng config
+            - Run command ```serve shutdown -y ```
+            - Remove the __num_replicas__ in __serve_config_app.yaml__
+            - Add below config (You can refer [serve_config_app_autoscale.yaml](/workspace/notebooks/serve_config_app_autoscale.yaml))
+                        
+                        max_ongoing_requests: 5
+                        autoscaling_config:
+                            target_ongoing_requests: 2
+                            min_replicas: 2
+                            max_replicas: 5
 
-        - Redeploy app using ```serve deploy serve_config_app.yaml  ```
-        - You can see auto_scaling of replica when u bombard the endpoint [http://localhost:8001](http://localhost:8001/) with requests
-    
+            - Redeploy app using below commands 
+               - ```serve start --http-host 0.0.0.0 --http-port 8001 ```
+               -  ```serve deploy serve_config_app.yaml  ```
+        - Simulate AutoScaling 
+            - Start ```locust -f src/locust_test.py --web-port 8004```. 
+            - It should be visible at [http://localhost:8004/](http://localhost:8004/)
+            - Load test  [http://localhost:8001](http://localhost:8001/) with requests using locust. You can use below settings
+                - Number of Users 100
+                - Ramp Up 10
+                - Host http://localhost:8001/
+            - You can see auto_scaling of replicas increasing at [http://localhost:8265/#/serve/applications/app1/RayAppAdvanced](http://localhost:8265/#/serve/applications/app1/RayAppAdvanced) after some time
+
 
 
 
