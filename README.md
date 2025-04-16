@@ -7,7 +7,7 @@ A simple tutorial on deploying fastapi apps using ray_serve
 ### Setting Up
 - Install Docker from [here](https://docs.docker.com/get-docker/)
 
-    * Note: If you do not want to use Docker you can can run the notebook/scripts directly on your machine also using [jupyter lab](https://jupyter.org/install)
+    * Note: If you do not want to use Docker you can run the notebook/scripts directly on your machine also using [jupyter lab](https://jupyter.org/install)
 
 - Run below script
     ```bash
